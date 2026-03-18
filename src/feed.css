@@ -1,0 +1,82 @@
+/**
+ * styles/pages/feed.css
+ * ─────────────────────────────────────────────────────────────────────────────
+ * Styles for the Main Feed page: hero heading, divider rule, and card grid.
+ */
+
+/* ── Hero heading ── */
+.feed-hero h1 {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: clamp(3rem, 8vw, 7rem);  /* fluid: scales between 3rem and 7rem */
+  line-height: 0.9;
+  letter-spacing: 0.04em;
+}
+/* The <em> on line 2 of the heading is italicised and coloured */
+.feed-hero h1 em { font-style: italic; color: var(--rust); }
+
+.feed-subtitle {
+  margin-top: 20px;
+  font-size: 0.75rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+/* ── Divider ── */
+.feed-divider {
+  margin: 36px 0;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+/* Horizontal rules flanking the label */
+.feed-divider::before,
+.feed-divider::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: var(--sand);
+}
+.feed-divider span {
+  font-size: 0.6rem;
+  letter-spacing: 0.3em;
+  color: var(--muted);
+  text-transform: uppercase;
+}
+
+/* ── Card grid ── */
+.feed-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2px;
+  margin-top: 24px;
+}
+
+.feed-card {
+  border: var(--border);
+  padding: 28px 24px;
+  cursor: pointer;
+  transition: background 0.2s;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Rust accent line that sweeps up from the bottom on hover */
+.feed-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0;
+  width: 3px; height: 100%;
+  background: var(--rust);
+  transform: scaleY(0);
+  transform-origin: bottom;
+  transition: transform 0.2s;
+}
+.feed-card:hover                { background: var(--ink); color: var(--cream); }
+.feed-card:hover::before        { transform: scaleY(1); }
+.feed-card:hover .card-num      { color: var(--sand); }
+.feed-card:hover .card-tag      { color: var(--sand); }
+
+.card-num   { font-size: 0.6rem;  letter-spacing: 0.3em; color: var(--muted); margin-bottom: 10px; }
+.card-title { font-family: 'Playfair Display', serif; font-size: 1.15rem; line-height: 1.3; margin-bottom: 10px; }
+.card-tag   { font-size: 0.6rem;  letter-spacing: 0.2em; text-transform: uppercase; color: var(--rust); }

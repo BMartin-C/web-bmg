@@ -1,0 +1,163 @@
+/**
+ * styles/nav.css
+ * ─────────────────────────────────────────────────────────────────────────────
+ * Styles for the top navigation bar, which has three visual layers:
+ *
+ *   1. .nav-logo       – brand mark cell on the far left.
+ *   2. .nav-links      – row of navigation buttons sharing a banner background.
+ *   3. .nav-deco-bottom – thin decoration stripe below the bar (colour set by
+ *                         decorations.css via a page-specific class).
+ *
+ * LOGO VARIANTS
+ * ──────────────
+ * .logo-main  – shown on the Main Feed page (dark ink background).
+ * .logo-sub   – shown on all other pages (rust / accent background).
+ * Both are plain solid-colour placeholders.  To use a real image, see the
+ * comment in components/NavBar.jsx → Logo component.
+ *
+ * NAV BANNER
+ * ───────────
+ * .nav-links uses a repeating diagonal gradient as a placeholder banner that
+ * runs continuously behind all nav buttons.  To replace with a real image:
+ *
+ *   background: url('/your-banner.jpg') center / cover no-repeat;
+ *
+ * Drop your image in the /public/ folder and update the path above.
+ * The nav buttons remain transparent, so the image shows through them.
+ */
+
+/* ── Wrapper ── */
+.nav-wrapper { flex-shrink: 0; }
+
+/* Main bar: logo cell (fixed width) + link strip (fills rest) */
+.nav-bar {
+  display: grid;
+  grid-template-columns: 90px 1fr;
+  border-bottom: var(--border);
+  position: relative;
+  z-index: 10;
+}
+
+/* ── Logo cell ── */
+.nav-logo {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-right: var(--border);
+  padding: 14px 10px;
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 1.5rem;
+  letter-spacing: 0.12em;
+  cursor: pointer;
+  transition: background 0.25s, color 0.25s;
+}
+
+/* Placeholder colour A — Main Feed (home) */
+/* TO REPLACE: swap background with url('/logo-main.svg') or similar */
+.logo-main {
+  background: var(--ink);
+  color: var(--cream);
+}
+
+/* Placeholder colour B — all other pages */
+/* TO REPLACE: swap background with url('/logo-sub.svg') or similar */
+.logo-sub {
+  background: var(--rust);
+  color: var(--cream);
+}
+
+/* ── Link strip ── */
+.nav-links {
+  display: flex;
+  align-items: stretch;
+  position: relative;
+
+  /*
+   * PLACEHOLDER BANNER — diagonal stripe gradient.
+   * TO REPLACE WITH A REAL IMAGE:
+   *   background: url('/your-banner.jpg') center / cover no-repeat;
+   */
+  background:
+    repeating-linear-gradient(
+      118deg,
+      #b5895a 0px,  #b5895a 18px,
+      #a07040 18px, #a07040 22px,
+      #c8a06a 22px, #c8a06a 44px,
+      #a07040 44px, #a07040 48px
+    );
+}
+
+/* Thin accent stripe at the very top of the link strip */
+.nav-deco-top {
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 3px;
+  background: repeating-linear-gradient(
+    90deg,
+    var(--rust) 0px, var(--rust) 8px,
+    transparent 8px, transparent 16px
+  );
+}
+
+/* ── Individual nav buttons ── */
+.nav-link {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px 12px;
+  border-right: var(--border);
+  font-family: 'DM Mono', monospace;
+  font-size: 0.7rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  cursor: pointer;
+  /* Transparent by default so the banner behind shows through */
+  background: transparent;
+  color: var(--cream);
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.55);
+  transition: background 0.18s, color 0.18s, text-shadow 0.18s;
+  user-select: none;
+  position: relative;
+}
+.nav-link:last-child { border-right: none; }
+
+/* Hover: semi-dark overlay — banner slightly visible beneath */
+.nav-link:hover {
+  background: rgba(26, 20, 16, 0.55);
+  color: var(--cream);
+  text-shadow: none;
+}
+
+/* Active: solid accent colour — banner fully hidden on this button only */
+.nav-link.active {
+  background: var(--rust);
+  color: var(--cream);
+  text-shadow: none;
+}
+
+/* Active underline indicator */
+.nav-link.active::after {
+  content: '';
+  position: absolute;
+  bottom: -2px; left: 20%; right: 20%;
+  height: 2px;
+  background: var(--ink);
+}
+
+/* ── Below-nav decoration stripe ──
+   Background colour is applied by a page-specific class from decorations.css */
+.nav-deco-bottom {
+  height: 18px;
+  border-bottom: var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  transition: background 0.3s, color 0.3s;
+}
+.nav-deco-bottom span {
+  font-size: 0.55rem;
+  letter-spacing: 0.4em;
+  text-transform: uppercase;
+}

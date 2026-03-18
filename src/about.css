@@ -1,0 +1,32 @@
+/**
+ * styles/pages/about.css
+ * ─────────────────────────────────────────────────────────────────────────────
+ * Styles for the About Me page two-column layout and skill bars.
+ * Used by components/pages/AboutPage.jsx.
+ */
+
+/* ── Two-column wrapper ── */
+.about-wrap { display: grid; grid-template-columns: 1fr 1fr; gap: 48px; }
+
+/* ── Left column: biography ── */
+.about-left h2 { font-family: 'Bebas Neue', sans-serif; font-size: 3.5rem; letter-spacing: 0.06em; margin-bottom: 20px; }
+.about-left p  { font-size: 0.72rem; line-height: 1.9; color: var(--muted); margin-bottom: 1em; }
+.about-left p:last-child { margin-bottom: 0; }
+
+/* ── Right column: skill bars ── */
+.skill-row {
+  border-bottom: 1px solid var(--sand);
+  padding: 14px 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.skill-row:first-child { border-top: 1px solid var(--sand); }
+
+.skill-name { font-size: 0.7rem; letter-spacing: 0.15em; text-transform: uppercase; }
+
+/* Track (background bar) */
+.skill-bar { width: 120px; height: 2px; background: var(--sand); position: relative; }
+
+/* Fill (coloured portion) — width is set as an inline style from the data */
+.skill-fill { position: absolute; left: 0; top: 0; bottom: 0; background: var(--rust); }

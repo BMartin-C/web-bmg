@@ -1,0 +1,118 @@
+/**
+ * styles/decorations.css
+ * ─────────────────────────────────────────────────────────────────────────────
+ * Defines the colour themes for the four decoration strips that surround the
+ * content area (top, bottom, left, right).  Each page has its own theme,
+ * identified by a short slug (e.g. "feed", "proj1") stored in DECORATION_MAP
+ * in data/content.js.
+ *
+ * HOW IT WORKS
+ * ─────────────
+ * The DecorationFrame component appends the slug to a CSS class prefix:
+ *   deco-top-{slug}   → colour of the top strip (below nav) + col-deco top
+ *   deco-side-{slug}  → colour of the left and right side strips
+ *   deco-col-{slug}   → colour of the top/bottom content-column strips
+ *
+ * Each theme sets only two properties: background and color (text).
+ *
+ * TO ADD A NEW COLOUR THEME
+ * ──────────────────────────
+ * 1. Choose a unique slug (e.g. "gallery").
+ * 2. Add three rules below, one per prefix:
+ *      .deco-top-gallery   { background: #hexval; color: #hexval; }
+ *      .deco-side-gallery  { background: #hexval; color: #hexval; }
+ *      .deco-col-gallery   { background: #hexval; color: #hexval; }
+ * 3. Reference the slug as `cls` in your DECORATION_MAP entry (content.js).
+ *
+ * ── Shared structure styles ──────────────────────────────────────────────────
+ * (Colours are below; structure/layout is here.)
+ */
+
+/* ── Body row: three-column grid [ side | content | side ] ── */
+.body-row {
+  display: grid;
+  grid-template-columns: var(--deco-w) 1fr var(--deco-w);
+  overflow: hidden;
+}
+
+/* ── Side strips (left & right) ── */
+.side-deco {
+  border-right: var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  position: relative;
+  transition: background 0.3s, color 0.3s;
+}
+.side-deco.right { border-right: none; border-left: var(--border); }
+
+/* Rotated label text */
+.side-deco-text {
+  font-size: 0.55rem;
+  letter-spacing: 0.35em;
+  text-transform: uppercase;
+  writing-mode: vertical-rl;
+  white-space: nowrap;
+}
+
+/* Thin centre-line for visual rhythm */
+.side-deco-line            { position: absolute; width: 1px; background: currentColor; opacity: 0.25; }
+.side-deco-line.v          { top: 0; bottom: 0; left: 50%; }
+
+/* ── Content column (three-row grid: top strip | scroll area | bottom strip) ── */
+.content-col {
+  display: grid;
+  grid-template-rows: 18px 1fr 18px;
+  overflow: hidden;
+}
+
+/* Top and bottom thin strips within the content column */
+.col-deco {
+  border-bottom: var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  transition: background 0.3s, color 0.3s;
+}
+.col-deco.bot { border-top: var(--border); border-bottom: none; }
+.col-deco span { font-size: 0.5rem; letter-spacing: 0.4em; text-transform: uppercase; }
+
+/* ── Scrollable content area ── */
+.content-area {
+  overflow-y: auto;
+  padding: 48px 64px;
+}
+
+/* ══════════════════════════════════════════════════════════════════════════════
+   COLOUR THEMES
+   Each theme is three rules: deco-top-*, deco-side-*, deco-col-*
+   All three share the same colours within a theme for visual consistency,
+   but you can split them if you want different colours per zone.
+   ══════════════════════════════════════════════════════════════════════════ */
+
+/* ── Main Feed — warm sand (matches the overall page palette) ── */
+.deco-top-feed    { background: #d4c5a9; color: #8a7d6b; }
+.deco-side-feed   { background: #d4c5a9; color: #8a7d6b; }
+.deco-col-feed    { background: #d4c5a9; color: #8a7d6b; }
+
+/* ── Project 1 — dark navy ── */
+.deco-top-proj1   { background: #2c3e50; color: #7f9ab0; }
+.deco-side-proj1  { background: #2c3e50; color: #7f9ab0; }
+.deco-col-proj1   { background: #2c3e50; color: #7f9ab0; }
+
+/* ── Project 2 — deep purple ── */
+.deco-top-proj2   { background: #4a235a; color: #b08ac0; }
+.deco-side-proj2  { background: #4a235a; color: #b08ac0; }
+.deco-col-proj2   { background: #4a235a; color: #b08ac0; }
+
+/* ── Contact — forest green ── */
+.deco-top-contact  { background: #1a3a2a; color: #6aaa88; }
+.deco-side-contact { background: #1a3a2a; color: #6aaa88; }
+.deco-col-contact  { background: #1a3a2a; color: #6aaa88; }
+
+/* ── About — dark walnut brown ── */
+.deco-top-about    { background: #3d2008; color: #c08050; }
+.deco-side-about   { background: #3d2008; color: #c08050; }
+.deco-col-about    { background: #3d2008; color: #c08050; }

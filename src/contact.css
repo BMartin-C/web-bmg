@@ -1,0 +1,54 @@
+/**
+ * styles/pages/contact.css
+ * ─────────────────────────────────────────────────────────────────────────────
+ * Styles for the Contact page form.
+ * Used by components/pages/ContactPage.jsx.
+ */
+
+.contact-wrap       { max-width: 540px; }
+.contact-wrap h2    { font-family: 'Bebas Neue', sans-serif; font-size: 3.5rem; letter-spacing: 0.06em; margin-bottom: 8px; }
+.contact-wrap p     { font-size: 0.72rem; line-height: 1.9; color: var(--muted); margin-bottom: 36px; }
+
+/* ── Field wrapper ── */
+.contact-field       { margin-bottom: 20px; }
+.contact-field label {
+  display: block;
+  font-size: 0.6rem;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  margin-bottom: 8px;
+  color: var(--muted);
+}
+
+/* Shared styles for both <input> and <textarea> */
+.contact-field input,
+.contact-field textarea {
+  width: 100%;
+  border: var(--border);
+  background: transparent;
+  padding: 12px 14px;
+  font-family: 'DM Mono', monospace;
+  font-size: 0.75rem;
+  color: var(--ink);
+  outline: none;
+  resize: none;
+  transition: border-color 0.2s;
+}
+.contact-field input:focus,
+.contact-field textarea:focus { border-color: var(--rust); }
+
+/* ── Submit button ── */
+.contact-btn {
+  margin-top: 8px;
+  padding: 14px 40px;
+  background: var(--ink);
+  color: var(--cream);
+  border: none;
+  font-family: 'DM Mono', monospace;
+  font-size: 0.65rem;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.contact-btn:hover { background: var(--rust); }

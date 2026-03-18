@@ -1,0 +1,42 @@
+/**
+ * styles/pages/project.css
+ * ─────────────────────────────────────────────────────────────────────────────
+ * Styles for project pages (Project 1, Project 2, …).
+ * Used by components/pages/ProjectPage.jsx.
+ */
+
+/* ── Header ── */
+.project-header     { margin-bottom: 40px; }
+.project-header h2  { font-family: 'Bebas Neue', sans-serif; font-size: 3.5rem; letter-spacing: 0.06em; }
+.proj-label         { font-size: 0.6rem; letter-spacing: 0.3em; text-transform: uppercase; color: var(--rust); }
+
+/* ── Case-study block ── */
+.project-block {
+  border: var(--border);
+  padding: 36px;
+  margin-bottom: 2px;
+  position: relative;
+}
+
+/*
+ * Large decorative numeral in the top-right corner of each block.
+ * The value comes from the `data-num` attribute set in ProjectPage.jsx.
+ * To remove it, delete this ::after rule.
+ */
+.project-block::after {
+  content: attr(data-num);
+  position: absolute;
+  top: 16px; right: 20px;
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 5rem;
+  color: var(--sand);
+  line-height: 1;
+  pointer-events: none;
+}
+
+.proj-title { font-family: 'Playfair Display', serif; font-size: 1.6rem; font-style: italic; margin-bottom: 10px; }
+.proj-desc  { font-size: 0.72rem; line-height: 1.8; color: var(--muted); max-width: 480px; margin-bottom: 20px; }
+
+/* ── Tag pills ── */
+.proj-tags  { display: flex; gap: 8px; flex-wrap: wrap; }
+.proj-tag   { font-size: 0.58rem; letter-spacing: 0.2em; text-transform: uppercase; border: 1px solid var(--ink); padding: 3px 10px; }

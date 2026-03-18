@@ -1,0 +1,81 @@
+/**
+ * styles/global.css
+ * ─────────────────────────────────────────────────────────────────────────────
+ * Site-wide resets, CSS custom properties (design tokens), and base element
+ * styles.  All colours, spacing, and typography fundamentals are defined here
+ * as CSS variables so they can be referenced consistently across every other
+ * stylesheet.
+ *
+ * FONTS
+ * ──────
+ * Three typefaces are loaded from Google Fonts (see the @import below):
+ *   Bebas Neue        – display / headline font (all-caps, condensed).
+ *   DM Mono           – monospaced body font used for UI text and labels.
+ *   Playfair Display  – serif font used for card titles and project headings.
+ *
+ * To swap fonts:
+ *   1. Replace the @import URL with your chosen Google Fonts link.
+ *   2. Update the font-family references in the :root block and component CSS.
+ *
+ * COLOUR TOKENS
+ * ──────────────
+ * --cream  background colour of the whole page.
+ * --ink    primary foreground / text colour.
+ * --rust   accent colour used for highlights, active states, and emphasis.
+ * --sand   secondary / muted surface colour (decoration strips, dividers).
+ * --muted  secondary text colour for labels and descriptions.
+ * --border shorthand for a 1.5px solid ink border (used throughout).
+ * --deco-w width of the left and right side decoration strips.
+ */
+
+/* ── Fonts ── */
+@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Mono:ital,wght@0,300;0,400;0,500;1,300&family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap');
+
+/* ── Reset ── */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+/* ── Design Tokens ── */
+:root {
+  /* Colours — TO CHANGE: update these hex values */
+  --cream:  #f5f0e8;
+  --ink:    #1a1410;
+  --rust:   #c0392b;
+  --sand:   #d4c5a9;
+  --muted:  #8a7d6b;
+
+  /* Borders */
+  --border: 1.5px solid var(--ink);
+
+  /* Layout */
+  --deco-w: 40px;   /* width of left/right decoration side strips */
+}
+
+/* ── Base ── */
+html, body, #root {
+  height: 100%;
+  background: var(--cream);
+  color: var(--ink);
+  font-family: 'DM Mono', monospace;
+}
+
+/* ── Shell layout
+   Two rows: nav (auto height) + body (fills remaining space) */
+.shell {
+  display: grid;
+  grid-template-rows: auto 1fr;
+  height: 100vh;
+  overflow: hidden;
+}
+
+/* ── Page transition animation ── */
+.page         { display: none; }
+.page.visible { display: block; animation: fadeUp 0.35s ease; }
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: translateY(0); }
+}

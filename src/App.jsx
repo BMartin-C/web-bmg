@@ -1,121 +1,89 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from './assets/vite.svg'
-import heroImg from './assets/hero.png'
-import './App.css'
+/**
+ * App.jsx — Root component
+ * ─────────────────────────────────────────────────────────────────────────────
+ * This is the top-level component.  Its only responsibilities are:
+ *   1. Tracking which page is currently active (router state).
+ *   2. Looking up the matching decoration config for that page.
+ *   3. Rendering the two structural components (NavBar + DecorationFrame)
+ *      and delegating to renderPage() to display the correct page component.
+ *
+ * Component tree:
+ *   App
+ *   ├── NavBar            (top bar + logo + banner)
+ *   └── DecorationFrame   (4 coloured strips around content)
+ *        └── [active page]
+ *             ├── MainFeedPage
+ *             ├── ProjectPage  (reused for each project)
+ *             ├── ContactPage
+ *             └── AboutPage
+ *
+ * HOW TO ADD A NEW PAGE
+ * ──────────────────────
+ * 1. Add the menu label to NAV_ITEMS in data/content.js.
+ * 2. Add a DECORATION_MAP entry for it in data/content.js.
+ * 3. Create a new component in components/pages/.
+ * 4. Add a case for it in the renderPage() switch below.
+ */
 
-function App() {
-  const [count, setCount] = useState(0)
+import { useState } from 'react'
+
+// ── Data & config ──────────────────────────────────────────────────────────
+import { NAV_ITEMS, DECORATION_MAP, PROJECT_PAGES } from './data/content'
+
+// ── Structural components ──────────────────────────────────────────────────
+import NavBar          from './NavBar'
+import DecorationFrame from './DecorationFrame'
+
+// ── Page components ────────────────────────────────────────────────────────
+import MainFeedPage from './MainFeedPage'
+import ProjectPage  from './ProjectPage'
+import ContactPage  from './ContactPage'
+import AboutPage    from './AboutPage'
+
+// ── Global styles (resets, tokens, shell layout) ───────────────────────────
+import './global.css'
+
+export default function App() {
+  // `active` holds the currently selected menu label — must match NAV_ITEMS strings.
+  const [active, setActive] = useState(NAV_ITEMS[0])
+
+  // Decoration config for the active page (colours + strip labels).
+  const deco = DECORATION_MAP[active]
+
+  /**
+   * renderPage
+   * Maps the active menu key to the correct page component.
+   * ProjectPage is reused for every project — it receives its data object
+   * from PROJECT_PAGES so no new case is needed for additional projects.
+   */
+  function renderPage() {
+    switch (active) {
+      case 'MAIN FEED': return <MainFeedPage />
+      case 'CONTACT':   return <ContactPage />
+      case 'ABOUT ME':  return <AboutPage />
+      default: {
+        // Generic project handler — matches any menuKey in PROJECT_PAGES.
+        const project = PROJECT_PAGES.find(p => p.menuKey === active)
+        if (project) return <ProjectPage project={project} />
+        return <p style={{ padding: 48 }}>Page not found: "{active}"</p>
+      }
+    }
+  }
 
   return (
-    <>
-      <section id="center">
-        <div className="hero">
-          <img src={heroImg} className="base" width="170" height="179" alt="" />
-          <img src={reactLogo} className="framework" alt="React logo" />
-          <img src={viteLogo} className="vite" alt="Vite logo" />
-        </div>
-        <div>
-          <h1>Get started</h1>
-          <p>
-            Edit <code>src/App.jsx</code> and save to test <code>HMR</code>
-          </p>
-        </div>
-        <button
-          className="counter"
-          onClick={() => setCount((count) => count + 1)}
-        >
-          Count is {count}
-        </button>
-      </section>
+    <div className="shell">
+      {/* Top navigation bar */}
+      <NavBar
+        navItems={NAV_ITEMS}
+        active={active}
+        deco={deco}
+        onSelect={setActive}
+      />
 
-      <div className="ticks"></div>
-
-      <section id="next-steps">
-        <div id="docs">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#documentation-icon"></use>
-          </svg>
-          <h2>Documentation</h2>
-          <p>Your questions, answered</p>
-          <ul>
-            <li>
-              <a href="https://vite.dev/" target="_blank">
-                <img className="logo" src={viteLogo} alt="" />
-                Explore Vite
-              </a>
-            </li>
-            <li>
-              <a href="https://react.dev/" target="_blank">
-                <img className="button-icon" src={reactLogo} alt="" />
-                Learn more
-              </a>
-            </li>
-          </ul>
-        </div>
-        <div id="social">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#social-icon"></use>
-          </svg>
-          <h2>Connect with us</h2>
-          <p>Join the Vite community</p>
-          <ul>
-            <li>
-              <a href="https://github.com/vitejs/vite" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#github-icon"></use>
-                </svg>
-                GitHub
-              </a>
-            </li>
-            <li>
-              <a href="https://chat.vite.dev/" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#discord-icon"></use>
-                </svg>
-                Discord
-              </a>
-            </li>
-            <li>
-              <a href="https://x.com/vite_js" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#x-icon"></use>
-                </svg>
-                X.com
-              </a>
-            </li>
-            <li>
-              <a href="https://bsky.app/profile/vite.dev" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#bluesky-icon"></use>
-                </svg>
-                Bluesky
-              </a>
-            </li>
-          </ul>
-        </div>
-      </section>
-
-      <div className="ticks"></div>
-      <section id="spacer"></section>
-    </>
+      {/* Content area surrounded by the four decoration strips */}
+      <DecorationFrame deco={deco}>
+        {renderPage()}
+      </DecorationFrame>
+    </div>
   )
 }
-
-export default App
