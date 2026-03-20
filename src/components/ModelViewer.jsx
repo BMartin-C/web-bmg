@@ -34,8 +34,10 @@
 
 import { useEffect, useRef } from 'react'
 import * as THREE from 'three'
-import { OrbitControls } from 'three/addons/controls/OrbitControls.js'
-// Uncomment to enable GLTF loading:
+// No external OrbitControls import needed — we use a lightweight inline
+// implementation below that avoids all three/examples path issues.
+// Uncomment to enable GLTF loading (also update the path to match your three version):
+// import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js'
 // import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js'
 
 import '../styles/model-viewer.css'
@@ -105,15 +107,73 @@ export default function ModelViewer({ modelPath, label, height = 380 }) {
     fillLight.position.set(-3, -2, -3)
     scene.add(fillLight)
 
-    // ── Orbit controls ────────────────────────────────────────────────────────
-    const controls = new OrbitControls(camera, renderer.domElement)
-    controls.enableDamping  = true    // smooth deceleration after release
-    controls.dampingFactor  = 0.07
-    controls.autoRotate     = true    // slow spin when idle
-    controls.autoRotateSpeed = 1.2
-    controls.enablePan      = false   // disable pan for simpler UX
-    controls.minDistance    = 1.5
-    controls.maxDistance    = 10
+    // ── Inline orbit controls ─────────────────────────────────────────────────
+    // A lightweight replacement for three/examples OrbitControls that avoids
+    // any package-path resolution issues across Three.js versions.
+    // Supports: left-drag to orbit, scroll to zoom, auto-rotate when idle.
+    const orbitState = {
+      isPointerDown: false,
+      lastX: 0, lastY: 0,
+      spherical: new THREE.Spherical().setFromVector3(camera.position),
+      autoRotate: true,
+      autoRotateSpeed: 0.004,   // radians per frame
+      dampingFactor: 0.08,
+      targetTheta: 0, targetPhi: Math.PI / 3,
+      currentTheta: 0, currentPhi: Math.PI / 3,
+      minDistance: 1.5, maxDistance: 10,
+    }
+    // Initialise from camera position
+    orbitState.targetTheta  = orbitState.spherical.theta
+    orbitState.targetPhi    = orbitState.spherical.phi
+    orbitState.currentTheta = orbitState.spherical.theta
+    orbitState.currentPhi   = orbitState.spherical.phi
+
+    const dom = renderer.domElement
+
+    function onPointerDown(e) {
+      orbitState.isPointerDown = true
+      orbitState.autoRotate    = false
+      orbitState.lastX = e.clientX
+      orbitState.lastY = e.clientY
+    }
+    function onPointerMove(e) {
+      if (!orbitState.isPointerDown) return
+      const dx = (e.clientX - orbitState.lastX) * 0.005
+      const dy = (e.clientY - orbitState.lastY) * 0.005
+      orbitState.lastX = e.clientX
+      orbitState.lastY = e.clientY
+      orbitState.targetTheta -= dx
+      orbitState.targetPhi    = Math.max(0.15, Math.min(Math.PI - 0.15,
+                                  orbitState.targetPhi + dy))
+    }
+    function onPointerUp()   { orbitState.isPointerDown = false }
+    function onWheel(e) {
+      orbitState.spherical.radius = Math.max(
+        orbitState.minDistance,
+        Math.min(orbitState.maxDistance,
+          orbitState.spherical.radius + e.deltaY * 0.01)
+      )
+    }
+
+    dom.addEventListener('pointerdown', onPointerDown)
+    dom.addEventListener('pointermove', onPointerMove)
+    dom.addEventListener('pointerup',   onPointerUp)
+    dom.addEventListener('pointerleave',onPointerUp)
+    dom.addEventListener('wheel',       onWheel, { passive: true })
+
+    /** Called each frame to update camera position from spherical coords. */
+    function updateOrbit() {
+      if (orbitState.autoRotate) {
+        orbitState.targetTheta += orbitState.autoRotateSpeed
+      }
+      // Smooth damp towards target angles
+      orbitState.currentTheta += (orbitState.targetTheta  - orbitState.currentTheta) * orbitState.dampingFactor
+      orbitState.currentPhi   += (orbitState.targetPhi    - orbitState.currentPhi)   * orbitState.dampingFactor
+      orbitState.spherical.theta = orbitState.currentTheta
+      orbitState.spherical.phi   = orbitState.currentPhi
+      camera.position.setFromSpherical(orbitState.spherical)
+      camera.lookAt(0, 0, 0)
+    }
 
     // ── Model loading ─────────────────────────────────────────────────────────
 
@@ -217,7 +277,7 @@ export default function ModelViewer({ modelPath, label, height = 380 }) {
     let animationId
     function animate() {
       animationId = requestAnimationFrame(animate)
-      controls.update()          // required for damping + auto-rotate
+      updateOrbit()                  // update camera from inline orbit state
       renderer.render(scene, camera)
     }
     animate()
@@ -228,7 +288,11 @@ export default function ModelViewer({ modelPath, label, height = 380 }) {
     return () => {
       cancelAnimationFrame(animationId)
       resizeObserver.disconnect()
-      controls.dispose()
+      dom.removeEventListener('pointerdown', onPointerDown)
+      dom.removeEventListener('pointermove', onPointerMove)
+      dom.removeEventListener('pointerup',   onPointerUp)
+      dom.removeEventListener('pointerleave',onPointerUp)
+      dom.removeEventListener('wheel',       onWheel)
       renderer.dispose()
       // Remove the canvas from the DOM
       if (container.contains(renderer.domElement)) {
