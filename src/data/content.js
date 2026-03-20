@@ -106,29 +106,182 @@ export const DECORATION_MAP = {
 // ─── Main Feed ────────────────────────────────────────────────────────────────
 
 /**
- * Cards shown in the 2-column grid on the Main Feed page.
- * Fields:
- *   num   – displayed as a zero-padded card number (e.g. "001")
- *   title – headline text on the card
- *   tag   – small category + year label at the bottom of each card
+ * FEED_ENTRIES
+ * ─────────────────────────────────────────────────────────────────────────────
+ * The ordered list of posts shown in the scrollable "older posts" list.
+ * Sorted newest-first — add new entries at the top.
  *
- * TO CHANGE: add, remove, or edit objects in this array.
+ * Each entry is also a full post: clicking a row loads it in the featured
+ * post section below.
+ *
+ * Fields:
+ *   id      – unique key (must be unique across all entries)
+ *   date    – display date string
+ *   title   – post headline
+ *   tag     – category label
+ *   excerpt – one-line summary shown in the list row
+ *   heroBg  – CSS background for the full-bleed image layer
+ *             Placeholder: solid colour. For a real image:
+ *               heroBg: "url('/hero.jpg') center / cover no-repeat"
+ *   blocks  – array of content blocks (same types as FEATURED_POST.blocks)
+ *             See the block type reference in FEATURED_POST below.
+ *
+ * TO ADD A NEW POST: prepend a new object to this array.
  */
-export const FEED_CARDS = [
-  { num: '001', title: 'Reimagining Editorial Layouts', tag: 'Design · 2025' },
-  { num: '002', title: 'Brutalist Web Aesthetics',      tag: 'Frontend · 2025' },
-  { num: '003', title: 'Type as Architecture',          tag: 'Typography · 2024' },
-  { num: '004', title: 'The Texture Manifesto',         tag: 'Visual · 2024' },
+export const FEED_ENTRIES = [
+  {
+    id:      '006',
+    date:    'Mar 2025',
+    title:   'Grid Systems in Motion',
+    tag:     'Motion',
+    excerpt: 'Applying typographic grid logic to animation timing and easing.',
+    heroBg:  '#2c3e50',
+    blocks: [
+      { type: 'text',       content: 'The grid is not a cage — it is a score. When we apply typographic grid logic to time-based media, the result is animation that feels inevitable rather than arbitrary. Every easing curve becomes a rhythm, every delay a beat.' },
+      { type: 'text-image', text: 'This piece documents a series of experiments applying Müller-Brockmann\'s spatial rules to motion design: fixed intervals, proportional relationships, and the deliberate use of negative space as a timing device.', bg: '#4a235a', caption: 'Fig. 01 — Grid overlay applied to a 24-frame motion sequence.' },
+      { type: 'quote',      content: 'The grid system is an aid, not a guarantee.', author: '— Josef Müller-Brockmann' },
+      { type: 'divider' },
+      { type: 'text',       content: 'Subsequent experiments moved beyond static grids into dynamic ones — grids whose column widths respond to audio amplitude, whose baseline shifts with motion blur.' },
+    ],
+  },
+  {
+    id:      '005',
+    date:    'Feb 2025',
+    title:   'Low-Poly as Aesthetic Choice',
+    tag:     '3D',
+    excerpt: 'Why constraints in geometry produce more expressive results.',
+    heroBg:  '#1a3a2a',
+    blocks: [
+      { type: 'text',  content: 'Low-poly is not a limitation — it is a vocabulary. When you reduce a form to its fewest possible faces, you force every remaining edge to carry meaning. The silhouette becomes the statement.' },
+      { type: 'image', bg: '#1a3a2a', caption: 'Fig. 01 — Icosahedron detail at subdivision level 1.' },
+      { type: 'text',  content: 'The flat-shaded face is the pixel of three-dimensional space. It is honest about its own construction in a way that smooth meshes rarely are.' },
+    ],
+  },
+  {
+    id:      '004',
+    date:    'Jan 2025',
+    title:   'The Texture Manifesto',
+    tag:     'Visual',
+    excerpt: 'Surface quality as the primary carrier of material honesty.',
+    heroBg:  '#3d2008',
+    blocks: [
+      { type: 'text',  content: 'Texture is not decoration applied after the fact. It is the evidence of how a thing was made — the grain of the paper, the weave of the fabric, the oxidation of the metal. To remove texture is to erase provenance.' },
+      { type: 'quote', content: 'Every surface tells a story of time and process.', author: '— Studio Notes, Jan 2025' },
+    ],
+  },
+  {
+    id:      '003',
+    date:    'Nov 2024',
+    title:   'Type as Architecture',
+    tag:     'Typography',
+    excerpt: 'Letterforms as load-bearing structural elements, not decoration.',
+    heroBg:  '#2c3e50',
+    blocks: [
+      { type: 'text',       content: 'A typeface is a building. Its proportions determine how much light passes through, how the eye moves from room to room, where the weight settles and where it lifts.' },
+      { type: 'text-image', text: 'The counter of a letter is as important as the stroke itself. White space is not absence — it is structure.', bg: '#2c3e50', caption: 'Fig. 01 — Counter study, Bebas Neue vs DM Mono.' },
+    ],
+  },
+  {
+    id:      '002',
+    date:    'Sep 2024',
+    title:   'Brutalist Web Aesthetics',
+    tag:     'Frontend',
+    excerpt: 'Exposing the grid, the border, and the raw document underneath.',
+    heroBg:  '#1a1410',
+    blocks: [
+      { type: 'text',  content: 'Brutalism on the web is not ugliness. It is a refusal to disguise the structure — to let the border be a border, the grid be visible, the document honest about itself.' },
+      { type: 'divider' },
+      { type: 'text',  content: 'The most interesting brutalist sites are not chaotic. They are rigidly systematic, their rawness the product of strict rules applied without softening.' },
+    ],
+  },
+  {
+    id:      '001',
+    date:    'Jul 2024',
+    title:   'Reimagining Editorial Layouts',
+    tag:     'Design',
+    excerpt: 'Breaking the magazine template open and rebuilding from first principles.',
+    heroBg:  '#4a235a',
+    blocks: [
+      { type: 'text',  content: 'The magazine grid emerged from the constraints of hot metal typesetting. We are no longer constrained by metal. Why are we still constrained by its ghost?' },
+      { type: 'quote', content: 'Design is the conscious effort to impose a meaningful order.', author: '— Victor Papanek' },
+      { type: 'text',  content: 'This series of layouts explores what editorial design looks like when every assumption about columns, gutters, and baseline grids is treated as optional rather than mandatory.' },
+    ],
+  },
 ]
 
-/** Hero text shown above the feed grid. */
-export const FEED_HERO = {
-  line1:    'Creative',
-  line2:    'Studio',   // rendered in italic + accent colour
-  line3:    '& Portfolio',
-  subtitle: 'Vol. 04 · Selected Works · 2025',
-  divider:  'latest entries',
+/**
+ * BETWEEN_BANNER
+ * ─────────────────────────────────────────────────────────────────────────────
+ * The centred banner shown between the entry list and the featured post.
+ * Does not reach the edges — it is horizontally centred at ~60% width.
+ *
+ * Fields:
+ *   label  – text shown when no real image is set (placeholder label)
+ *   bg     – CSS background value
+ *             Placeholder: solid colour.
+ *             For a real image: "url('/banner.jpg') center / cover no-repeat"
+ *   height – banner height in pixels (default 80)
+ */
+export const BETWEEN_BANNER = {
+  label:  'BANNER',
+  bg:     '#d4c5a9',
+  height: 80,
 }
+
+/**
+ * CAROUSEL_BANNER
+ * ─────────────────────────────────────────────────────────────────────────────
+ * Small banner attached to the top edge of the vertical posts carousel.
+ * Shares the same full-bleed width as the carousel (reaches the side strips).
+ * The space between the central banner, this banner, and the entry list is
+ * preserved — this banner sits directly above the carousel with no extra gap.
+ *
+ * Fields:
+ *   label  – placeholder text (remove once a real image is set)
+ *   bg     – CSS background value
+ *             For a real image: "url('/carousel-banner.jpg') center / cover no-repeat"
+ *   height – height in pixels
+ */
+export const CAROUSEL_BANNER = {
+  label:  'CAROUSEL BANNER',
+  bg:     '#8a7d6b',
+  height: 36,
+}
+
+/**
+ * BANNER_SECTION_BG
+ * ─────────────────────────────────────────────────────────────────────────────
+ * Background of the right section of the sticky row (behind the banner).
+ * Currently a placeholder colour. To use a real image:
+ *   bg: "url('/banner-bg.jpg') center / cover no-repeat"
+ * Drop the file in /public/ and update the path.
+ */
+export const BANNER_SECTION_BG = {
+  bg: '#3d2e1e',
+}
+
+
+/**
+ * FEATURED_POST
+ * ─────────────────────────────────────────────────────────────────────────────
+ * The default post shown when the page first loads (before any entry is clicked).
+ * Clicking any row in the entry list will replace this with that entry's content.
+ *
+ * This object has the same shape as a FEED_ENTRIES item, so you can also just
+ * point it at one:
+ *   import { FEED_ENTRIES } from './content'
+ *   const FEATURED_POST = FEED_ENTRIES[0]
+ *
+ * BLOCK TYPES
+ * ─────────────
+ *   { type: 'text',       content: '...' }
+ *   { type: 'image',      bg: '#hex|url(...)', caption: '...' }
+ *   { type: 'text-image', text: '...', bg: '#hex|url(...)', caption: '...' }
+ *   { type: 'quote',      content: '...', author: '...' }
+ *   { type: 'divider' }
+ */
+export const FEATURED_POST = FEED_ENTRIES[0]
+
 
 // ─── Projects ─────────────────────────────────────────────────────────────────
 

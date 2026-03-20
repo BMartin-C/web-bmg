@@ -1,82 +1,372 @@
-/**
- * styles/pages/feed.css
- * ─────────────────────────────────────────────────────────────────────────────
- * Styles for the Main Feed page: hero heading, divider rule, and card grid.
- */
+/* ── Page wrapper ── */
+.feed-page { display: block; }
 
-/* ── Hero heading ── */
-.feed-hero h1 {
-  font-family: 'Bebas Neue', sans-serif;
-  font-size: clamp(3rem, 8vw, 7rem);  /* fluid: scales between 3rem and 7rem */
-  line-height: 0.9;
-  letter-spacing: 0.04em;
+/* ══════════════════════════════════════════════════════════
+   STICKY TOP SECTION
+   ══════════════════════════════════════════════════════════ */
+
+.feed-sticky {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  background: var(--cream);
+  padding-top: 10px;   /* space above the row */
 }
-/* The <em> on line 2 of the heading is italicised and coloured */
-.feed-hero h1 em { font-style: italic; color: var(--rust); }
 
-.feed-subtitle {
-  margin-top: 20px;
-  font-size: 0.75rem;
+/* ══════════════════════════════════════════════════════════
+   TOP ROW — entry list + banner side by side
+   ══════════════════════════════════════════════════════════ */
+
+/* Row container: entry list on left, banner on right */
+.feed-top-row {
+  display: flex;
+  align-items: stretch;
+  margin: 0 0 10px 16px;
+  height: 140px;
+  border: var(--border);
+}
+
+/* Entry list — halved to ~25% width */
+.feed-top {
+  width: 25%;
+  flex-shrink: 0;
+  border-right: var(--border);
+  height: 100%;
+  border-top: none;
+  border-left: none;
+  border-bottom: none;
+}
+
+.feed-list-col {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  overflow: hidden;
+}
+
+.feed-list-labels {
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 10px;
+  padding: 4px 10px;
+  border-bottom: var(--border);
+}
+.feed-list-label-top {
+  font-size: 0.48rem;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: var(--ink);
+}
+.feed-list-label-sub {
+  font-size: 0.42rem;
   letter-spacing: 0.2em;
   text-transform: uppercase;
   color: var(--muted);
 }
 
-/* ── Divider ── */
-.feed-divider {
-  margin: 36px 0;
+.feed-list {
+  flex: 1;
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: var(--sand) transparent;
+}
+.feed-list::-webkit-scrollbar       { width: 3px; }
+.feed-list::-webkit-scrollbar-track { background: transparent; }
+.feed-list::-webkit-scrollbar-thumb { background: var(--sand); }
+
+/* ── Entry row — very tight ── */
+.entry-row {
+  display: grid;
+  grid-template-columns: 60px 1fr 70px;
+  align-items: center;
+  gap: 8px;
+  padding: 4px 10px;
+  border-bottom: 1px solid var(--sand);
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s;
+  user-select: none;
+}
+.entry-row:last-child { border-bottom: none; }
+.entry-row:hover      { background: rgba(26,20,16,0.06); }
+.entry-row--active    { background: var(--ink) !important; color: var(--cream); }
+.entry-row--active .entry-date,
+.entry-row--active .entry-tag { color: var(--sand); }
+
+.entry-date {
+  font-size: 0.46rem;
+  letter-spacing: 0.08em;
+  color: var(--muted);
+  white-space: nowrap;
+}
+.entry-title {
+  font-size: 0.62rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.entry-tag {
+  font-size: 0.42rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--rust);
+  text-align: right;
+}
+
+/* ══════════════════════════════════════════════════════════
+   BETWEEN BANNER — right column, banner smaller than the cell
+   ══════════════════════════════════════════════════════════ */
+
+/* Wrapper fills the right column, centres the smaller banner */
+.between-banner-wrap {
+  flex: 1;
+  display: flex;
+  align-items: center;      /* vertical centre in row */
+  justify-content: center;  /* horizontal centre */
+  padding: 14px 20px;       /* inset so banner is smaller than the cell */
+}
+
+/* The actual banner block */
+.between-banner {
+  width: 60%;        /* narrower than the cell */
+  height: 100%;      /* fills the padded height */
   display: flex;
   align-items: center;
-  gap: 16px;
-}
-/* Horizontal rules flanking the label */
-.feed-divider::before,
-.feed-divider::after {
-  content: '';
-  flex: 1;
-  height: 1px;
-  background: var(--sand);
-}
-.feed-divider span {
-  font-size: 0.6rem;
-  letter-spacing: 0.3em;
-  color: var(--muted);
-  text-transform: uppercase;
-}
-
-/* ── Card grid ── */
-.feed-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 2px;
-  margin-top: 24px;
-}
-
-.feed-card {
+  justify-content: center;
   border: var(--border);
-  padding: 28px 24px;
-  cursor: pointer;
-  transition: background 0.2s;
+}
+
+.between-banner-label {
+  font-size: 0.46rem;
+  letter-spacing: 0.35em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+/* ── Carousel banner — flush above carousel ── */
+.carousel-banner {
+  margin-left:  calc(-1 * var(--deco-w) - 1.5px);
+  margin-right: calc(-1 * var(--deco-w) - 1.5px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-bottom: var(--border);
+}
+.carousel-banner-label {
+  font-size: 0.46rem;
+  letter-spacing: 0.35em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.5);
+}
+
+/* ══════════════════════════════════════════════════════════
+   POSTS SCROLL AREA — maximised height
+   Sticky section ≈ 200px total, so carousel gets the rest.
+   ══════════════════════════════════════════════════════════ */
+
+.posts-scroll-wrap {
   position: relative;
+  margin-left:  calc(-1 * var(--deco-w) - 1.5px);
+  margin-right: calc(-1 * var(--deco-w) - 1.5px);
+  /* Pull up by half the carousel banner height (36px / 2 = 18px)
+     so the carousel starts from the middle of the banner */
+  margin-top: -18px;
+  z-index: 5;   /* sits above the carousel-banner (z-index default) but below sticky (z-index 20) */
+  height: calc(100vh - 220px);
+  min-height: 300px;
+  display: flex;
+}
+
+.posts-scroll {
+  flex: 1;
+  overflow-y: scroll;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+.posts-scroll::-webkit-scrollbar { display: none; }
+
+.scroll-track {
+  position: absolute;
+  top: 0; right: 0; bottom: 0;
+  width: 3px;
+  background: rgba(255,255,255,0.08);
+  z-index: 10;
+}
+
+.scroll-thumb {
+  position: absolute;
+  left: 0; right: 0;
+  background: var(--sand);
+  border-radius: 2px;
+  transition: top 0.05s linear;
+  min-height: 24px;
+}
+
+/* ══════════════════════════════════════════════════════════
+   POST CARD — one full post entry
+   Four layers:
+     .post-bg-image       z:0 — full-bleed background colour/image
+     .post-bg-transition  z:1 — gradient bleeding into next post's colour
+     .post-bg-overlay     z:2 — centred readable overlay
+     .post-content        z:3 — text content
+   ══════════════════════════════════════════════════════════ */
+
+.post-card {
+  position: relative;
+  min-height: 300px;
+  color: var(--cream);
   overflow: hidden;
 }
 
-/* Rust accent line that sweeps up from the bottom on hover */
-.feed-card::before {
-  content: '';
+/* Layer 1 — background colour/image, full width */
+.post-bg-image {
   position: absolute;
-  top: 0; left: 0;
-  width: 3px; height: 100%;
-  background: var(--rust);
-  transform: scaleY(0);
-  transform-origin: bottom;
-  transition: transform 0.2s;
+  inset: 0;
+  z-index: 0;
+  background: #2c3e50;
+  background-size: cover;
+  background-position: center;
 }
-.feed-card:hover                { background: var(--ink); color: var(--cream); }
-.feed-card:hover::before        { transform: scaleY(1); }
-.feed-card:hover .card-num      { color: var(--sand); }
-.feed-card:hover .card-tag      { color: var(--sand); }
 
-.card-num   { font-size: 0.6rem;  letter-spacing: 0.3em; color: var(--muted); margin-bottom: 10px; }
-.card-title { font-family: 'Playfair Display', serif; font-size: 1.15rem; line-height: 1.3; margin-bottom: 10px; }
-.card-tag   { font-size: 0.6rem;  letter-spacing: 0.2em; text-transform: uppercase; color: var(--rust); }
+/* Layer 2 — transition gradient at the bottom of this post.
+   Fades from transparent to the next post's heroBg colour.
+   Height ~80px — subtle blend, not too dominant. */
+.post-bg-transition {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 80px;
+  z-index: 1;
+  pointer-events: none;
+}
+
+/* Layer 3 — solid overlay, 1/3 narrower so raw bg is visible at edges */
+.post-bg-overlay {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left:  16.67%;
+  right: 16.67%;
+  z-index: 2;
+  background: rgba(26, 20, 16, 0.82);
+}
+
+/* Layer 4 — readable content, padded to sit inside the overlay */
+.post-content {
+  position: relative;
+  z-index: 3;
+  padding: 40px calc(16.67% + 32px) 60px;  /* bottom pad clears the transition zone */
+}
+
+/* ── Post header ── */
+.post-header   { margin-bottom: 20px; }
+
+.post-meta {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 10px;
+}
+.post-tag {
+  font-size: 0.58rem;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: var(--rust);
+}
+.post-date {
+  font-size: 0.58rem;
+  letter-spacing: 0.15em;
+  color: rgba(245,240,232,0.45);
+}
+.post-title {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 2.6rem;
+  letter-spacing: 0.05em;
+  line-height: 1;
+  margin-bottom: 16px;
+  color: var(--cream);
+}
+.post-rule {
+  height: 1px;
+  background: rgba(255,255,255,0.15);
+  margin-bottom: 20px;
+}
+
+/* ── Block container ── */
+.post-blocks {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+/* ── Block: text ── */
+.block-text {
+  font-size: 0.75rem;
+  line-height: 1.9;
+  color: rgba(245,240,232,0.82);
+  margin: 0;
+}
+
+/* ── Block: image ── */
+.block-image-wrap { display: flex; flex-direction: column; gap: 8px; }
+.block-image {
+  width: 100%;
+  aspect-ratio: 16 / 7;
+  background: rgba(255,255,255,0.1);
+  border: 1px solid rgba(255,255,255,0.2);
+}
+.block-image-caption {
+  font-size: 0.55rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: rgba(245,240,232,0.35);
+}
+
+/* ── Block: text + image side by side ── */
+.block-text-image {
+  display: grid;
+  grid-template-columns: 3fr 2fr;
+  gap: 24px;
+  align-items: start;
+}
+.block-text-image .block-image { aspect-ratio: 4 / 3; }
+
+/* ── Block: pull-quote ── */
+.block-quote {
+  border-left: 2px solid var(--rust);
+  padding: 4px 0 4px 20px;
+  margin: 0;
+}
+.block-quote p {
+  font-family: 'Playfair Display', serif;
+  font-size: 0.9rem;
+  font-style: italic;
+  line-height: 1.7;
+  color: rgba(245,240,232,0.9);
+  margin-bottom: 6px;
+}
+.block-quote cite {
+  font-size: 0.58rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: rgba(245,240,232,0.4);
+  font-style: normal;
+}
+
+/* ── Block: divider ── */
+.block-divider {
+  border: none;
+  border-top: 1px solid rgba(255,255,255,0.12);
+  margin: 4px 0;
+}
+
+/* ── Unknown block type (dev fallback) ── */
+.block-unknown {
+  font-size: 0.65rem;
+  color: var(--rust);
+  border: 1px dashed var(--rust);
+  padding: 8px 12px;
+  opacity: 0.7;
+}

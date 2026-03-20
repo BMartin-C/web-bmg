@@ -64,7 +64,10 @@
 .content-col {
   display: grid;
   grid-template-rows: 18px 1fr 18px;
-  overflow: hidden;
+  /* overflow visible so full-bleed elements can reach the side strips */
+  overflow: visible;
+  min-width: 0;
+  min-height: 0;
 }
 
 /* Top and bottom thin strips within the content column */
@@ -82,7 +85,13 @@
 /* ── Scrollable content area ── */
 .content-area {
   overflow-y: auto;
+  overflow-x: visible;
   padding: 48px 64px;
+}
+
+/* Feed page: remove padding — feed components manage their own spacing */
+.content-area:has(.feed-page) {
+  padding: 0;
 }
 
 /* ══════════════════════════════════════════════════════════════════════════════
