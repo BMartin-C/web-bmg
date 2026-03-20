@@ -31,17 +31,17 @@ import { useState } from 'react'
 import { NAV_ITEMS, DECORATION_MAP, PROJECT_PAGES } from './data/content'
 
 // ── Structural components ──────────────────────────────────────────────────
-import NavBar          from './NavBar'
-import DecorationFrame from './DecorationFrame'
+import NavBar          from './components/NavBar'
+import DecorationFrame from './components/DecorationFrame'
 
 // ── Page components ────────────────────────────────────────────────────────
-import MainFeedPage from './MainFeedPage'
-import ProjectPage  from './ProjectPage'
-import ContactPage  from './ContactPage'
-import AboutPage    from './AboutPage'
+import MainFeedPage from './components/pages/MainFeedPage'
+import ProjectPage  from './components/pages/ProjectPage'
+import ContactPage  from './components/pages/ContactPage'
+import AboutPage    from './components/pages/AboutPage'
 
 // ── Global styles (resets, tokens, shell layout) ───────────────────────────
-import './global.css'
+import './styles/global.css'
 
 export default function App() {
   // `active` holds the currently selected menu label — must match NAV_ITEMS strings.

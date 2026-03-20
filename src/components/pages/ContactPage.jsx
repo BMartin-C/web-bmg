@@ -23,8 +23,8 @@
  */
 
 import { useState } from 'react'
-import { CONTACT_CONTENT } from './data/content'
-import './contact.css'
+import { CONTACT_CONTENT } from '../../data/content'
+import '../../styles/pages/contact.css'
 
 // ─── FormField ────────────────────────────────────────────────────────────────
 

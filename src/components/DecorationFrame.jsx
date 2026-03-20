@@ -26,7 +26,7 @@
  *   children {ReactNode} – the content column (top strip, scrollable area, bottom strip).
  */
 
-import './decorations.css'
+import '../styles/decorations.css'
 
 // ─── SideStrip ────────────────────────────────────────────────────────────────
 

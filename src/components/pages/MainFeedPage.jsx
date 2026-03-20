@@ -12,8 +12,8 @@
  * Props  – none (reads directly from the shared content module).
  */
 
-import { FEED_HERO, FEED_CARDS } from './data/content'
-import './feed.css'
+import { FEED_HERO, FEED_CARDS } from '../../data/content'
+import '../../styles/pages/feed.css'
 
 // ─── FeedCard ─────────────────────────────────────────────────────────────────
 

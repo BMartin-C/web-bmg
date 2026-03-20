@@ -11,8 +11,8 @@
  * Props  – none.
  */
 
-import { ABOUT_CONTENT } from './data/content'
-import './about.css'
+import { ABOUT_CONTENT } from '../../data/content'
+import '../../styles/pages/about.css'
 
 // ─── SkillBar ─────────────────────────────────────────────────────────────────
 

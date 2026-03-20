@@ -19,7 +19,7 @@
  *   onSelect  {function}  – called with the page name when a button is clicked.
  */
 
-import './nav.css'
+import '../styles/nav.css'
 
 // ─── Logo ─────────────────────────────────────────────────────────────────────
 

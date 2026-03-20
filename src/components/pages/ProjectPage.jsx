@@ -23,7 +23,7 @@
  *     { menuKey, label, title, blocks: [{ num, title, desc, tags }] }
  */
 
-import './project.css'
+import '../../styles/pages/project.css'
 
 // ─── ProjectBlock ─────────────────────────────────────────────────────────────
 
