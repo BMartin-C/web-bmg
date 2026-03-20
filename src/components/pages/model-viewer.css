@@ -1,0 +1,81 @@
+/**
+ * styles/model-viewer.css
+ * ─────────────────────────────────────────────────────────────────────────────
+ * Styles for the ModelViewer component's container and label.
+ * The Three.js <canvas> fills the container div; sizing is controlled by
+ * the `height` prop passed to <ModelViewer>.
+ */
+
+/* ── Outer wrapper ── */
+.model-viewer-wrap {
+  border: var(--border);
+  overflow: hidden;
+  position: relative;
+  margin-bottom: 2px;   /* consistent gap with project-block spacing */
+}
+
+/* ── Canvas container ──
+   The Three.js renderer injects a <canvas> into this div.
+   width: 100% lets ResizeObserver drive the actual pixel dimensions. */
+.model-viewer-canvas {
+  width: 100%;
+  display: block;
+  cursor: grab;
+  background: #f0ebe0;  /* matches BG_COLOR in ModelViewer.jsx */
+}
+.model-viewer-canvas:active { cursor: grabbing; }
+
+/* ── Interaction hint overlay (top-left corner) ── */
+.model-viewer-wrap::before {
+  content: 'drag to rotate · scroll to zoom';
+  position: absolute;
+  top: 10px;
+  left: 14px;
+  font-family: 'DM Mono', monospace;
+  font-size: 0.5rem;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: var(--muted);
+  pointer-events: none;
+  opacity: 0.7;
+}
+
+/* ── Model slot label (shown when modelPath is set but no file loaded yet) ──
+   Also used as the persistent caption below the viewer. */
+.model-viewer-label {
+  border-top: var(--border);
+  padding: 8px 14px;
+  background: var(--sand);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.model-viewer-label span {
+  font-size: 0.58rem;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+/* ── Slot placeholder (shown when no model is loaded) ──
+   Displays a centred drop-zone message inside an empty viewer. */
+.model-viewer-slot {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  pointer-events: none;
+}
+.model-viewer-slot-icon {
+  font-size: 2rem;
+  opacity: 0.25;
+}
+.model-viewer-slot-text {
+  font-size: 0.58rem;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: var(--muted);
+}

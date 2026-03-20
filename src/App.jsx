@@ -35,10 +35,11 @@ import NavBar          from './components/NavBar'
 import DecorationFrame from './components/DecorationFrame'
 
 // ── Page components ────────────────────────────────────────────────────────
-import MainFeedPage from './components/pages/MainFeedPage'
-import ProjectPage  from './components/pages/ProjectPage'
-import ContactPage  from './components/pages/ContactPage'
-import AboutPage    from './components/pages/AboutPage'
+import MainFeedPage  from './components/pages/MainFeedPage'
+import ProjectPage   from './components/pages/ProjectPage'
+import Project2Page  from './components/pages/Project2Page'  // 3D viewer page
+import ContactPage   from './components/pages/ContactPage'
+import AboutPage     from './components/pages/AboutPage'
 
 // ── Global styles (resets, tokens, shell layout) ───────────────────────────
 import './styles/global.css'
@@ -61,6 +62,11 @@ export default function App() {
       case 'MAIN FEED': return <MainFeedPage />
       case 'CONTACT':   return <ContactPage />
       case 'ABOUT ME':  return <AboutPage />
+
+      // Project 2 has a custom layout with 3D model viewers.
+      // All other projects fall through to the generic ProjectPage.
+      case 'PROJECT 2': return <Project2Page />
+
       default: {
         // Generic project handler — matches any menuKey in PROJECT_PAGES.
         const project = PROJECT_PAGES.find(p => p.menuKey === active)

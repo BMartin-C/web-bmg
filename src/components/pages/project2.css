@@ -1,0 +1,40 @@
+/**
+ * styles/pages/project2.css
+ * ─────────────────────────────────────────────────────────────────────────────
+ * Layout styles unique to Project2Page — specifically the side-by-side
+ * split between a text block and a 3D viewer.
+ *
+ * All other styles (project-block, proj-title, etc.) are inherited from
+ * styles/pages/project.css which is also imported by Project2Page.jsx.
+ */
+
+/* ── Side-by-side split: [text block] [3D viewer] ── */
+.proj2-split {
+  display: grid;
+  grid-template-columns: 1fr 1fr;  /* equal halves — adjust ratio as needed */
+  gap: 2px;                         /* same gap used between project-blocks */
+  margin-bottom: 2px;
+  align-items: stretch;
+}
+
+/* Both children fill the full height of the tallest sibling */
+.proj2-split > * {
+  height: 100%;
+}
+
+/* Make the project-block inside the split fill its grid cell */
+.proj2-split .project-block {
+  margin-bottom: 0;   /* override the default bottom margin from project.css */
+  height: 100%;
+}
+
+/* Make the model-viewer-wrap inside the split fill its grid cell */
+.proj2-split .model-viewer-wrap {
+  margin-bottom: 0;
+  display: flex;
+  flex-direction: column;
+}
+.proj2-split .model-viewer-canvas {
+  flex: 1;            /* canvas grows to fill the available height */
+  height: auto !important;  /* override inline height — parent dictates size */
+}
