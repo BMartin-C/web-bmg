@@ -176,9 +176,10 @@ function CarouselBanner() {
   )
 }
 
-function EntryRow({ entry, isActive, onClick }) {
+function EntryRow({ entry, isActive, onClick, entryRef }) {
   return (
     <div
+      ref={entryRef}
       className={`entry-row${isActive ? ' entry-row--active' : ''}`}
       onClick={onClick}
       title={entry.excerpt}
@@ -195,9 +196,11 @@ function EntryRow({ entry, isActive, onClick }) {
 export default function MainFeedPage() {
   const postRefs           = useRef({})
   const scrollContainerRef = useRef(null)
-  const [activeId, setActiveId]     = useState(FEED_ENTRIES[0].id)
-  const [thumbTop,  setThumbTop]    = useState(0)    // % from top of track
-  const [thumbHeight, setThumbHeight] = useState(20) // % of track height
+  const feedListRef        = useRef(null)   // ref to the entry list scroll container
+  const entryRowRefs       = useRef({})     // maps entry.id → its row DOM element
+  const [activeId, setActiveId]       = useState(FEED_ENTRIES[0].id)
+  const [thumbTop,  setThumbTop]      = useState(0)
+  const [thumbHeight, setThumbHeight] = useState(20)
 
   // ── Custom scrollbar: update thumb on scroll ──────────────────────────────
   const handleScroll = useCallback(() => {
@@ -206,11 +209,31 @@ export default function MainFeedPage() {
     const { scrollTop, scrollHeight, clientHeight } = el
     const scrollable = scrollHeight - clientHeight
     const ratio      = scrollable > 0 ? scrollTop / scrollable : 0
-    // Thumb height is proportional to visible / total content
     const h = Math.max(6, (clientHeight / scrollHeight) * 100)
     setThumbHeight(h)
     setThumbTop(ratio * (100 - h))
   }, [])
+
+  // ── Auto-scroll the entry list to keep the active row visible ─────────────
+  // Runs every time activeId changes (either from a click or from scrolling
+  // the carousel, which updates activeId via IntersectionObserver).
+  useEffect(() => {
+    const list    = feedListRef.current
+    const row     = entryRowRefs.current[activeId]
+    if (!list || !row) return
+    // Only scroll if the row is outside the visible area of the list
+    const listTop    = list.scrollTop
+    const listBottom = listTop + list.clientHeight
+    const rowTop     = row.offsetTop
+    const rowBottom  = rowTop + row.offsetHeight
+    if (rowTop < listTop) {
+      // Row is above the visible area — scroll up to it
+      list.scrollTo({ top: rowTop, behavior: 'smooth' })
+    } else if (rowBottom > listBottom) {
+      // Row is below the visible area — scroll down to it
+      list.scrollTo({ top: rowBottom - list.clientHeight, behavior: 'smooth' })
+    }
+  }, [activeId])
 
   // ── IntersectionObserver: keep entry list in sync with scroll ─────────────
   useEffect(() => {
@@ -261,12 +284,13 @@ export default function MainFeedPage() {
                 <span className="feed-list-label-top">OLDER POSTS</span>
                 <span className="feed-list-label-sub">LISTA DE POSTS</span>
               </div>
-              <div className="feed-list">
+              <div className="feed-list" ref={feedListRef}>
                 {FEED_ENTRIES.map(entry => (
                   <EntryRow
                     key={entry.id}
                     entry={entry}
                     isActive={entry.id === activeId}
+                    entryRef={el => { entryRowRefs.current[entry.id] = el }}
                     onClick={() => scrollToPost(entry.id)}
                   />
                 ))}
