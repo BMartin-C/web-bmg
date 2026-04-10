@@ -83,7 +83,7 @@ export default function Project2Page() {
           and follow the GLTFLoader instructions in ModelViewer.jsx.        */}
       <ModelViewer
         label="Model Slot A — drop a .glb file here (see ModelViewer.jsx)"
-        height={360}
+        height={460}
         /* modelPath="/models/your-model-a.glb" */
       />
 
@@ -91,7 +91,7 @@ export default function Project2Page() {
       <div className="proj2-split">
 
         {/* Left: first case-study block from content.js */}
-        {project.blocks[0] && (
+        {project.blocks[2] && (
           <ProjectBlock {...project.blocks[0]} />
         )}
 
@@ -101,13 +101,23 @@ export default function Project2Page() {
           height={280}
           /* modelPath="/models/your-model-b.glb" */
         />
+        {/* ── Second text block — full width ── */}
+      {project.blocks[2] && (
+        <ProjectBlock {...project.blocks[2]} />
+         )}
+         <ModelViewer
+          label="Model Slot B"
+          height={280}
+          /* modelPath="/models/your-model-b.glb" */
+        />
 
       </div>
 
       {/* ── Second text block — full width ── */}
-      {project.blocks[1] && (
+      {project.blocks[2] && (
         <ProjectBlock {...project.blocks[1]} />
       )}
+       
 
     </div>
   )

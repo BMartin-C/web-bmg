@@ -318,6 +318,12 @@ export const PROJECT_PAGES = [
         desc:  "Redesign of the client's web presence, focusing on editorial storytelling and navigating large portfolios with clarity and elegance.",
         tags:  ['UX', 'Web', 'React'],
       },
+            {
+        num:   '03',
+        title: 'Exhibition Catalogue',
+        desc:  'Art direction and layout design for a travelling exhibition catalogue, distributed across twelve venues in six countries.',
+        tags:  ['Art Direction', 'Catalogue'],
+      },
     ],
   },
   {
@@ -337,7 +343,7 @@ export const PROJECT_PAGES = [
         desc:  'Art direction and layout design for a travelling exhibition catalogue, distributed across twelve venues in six countries.',
         tags:  ['Art Direction', 'Catalogue'],
       },
-      {
+            {
         num:   '03',
         title: 'Exhibition Catalogue',
         desc:  'Art direction and layout design for a travelling exhibition catalogue, distributed across twelve venues in six countries.',
