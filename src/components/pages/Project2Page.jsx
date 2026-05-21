@@ -1,72 +1,49 @@
 /**
  * pages/Project2Page.jsx
  * ─────────────────────────────────────────────────────────────────────────────
- * The Project 2 page.  Unlike the generic ProjectPage, this page has a
- * dedicated layout that includes interactive 3D model viewers alongside the
- * standard case-study blocks.
+ * Dedicated layout for Project 2: interleaves 3D model viewers with the
+ * standard case-study blocks from content.js.
  *
  * LAYOUT
  * ───────
- *   ┌──────────────────────────────────────────┐
- *   │  Project header (label + title)           │
- *   ├──────────────────────────────────────────┤
- *   │  3D Viewer — Model Slot A                 │ ← placeholder geometry
- *   │  Caption: "Model A — …"                  │
- *   ├────────────────────┬─────────────────────┤
- *   │  Case-study block  │  3D Viewer — Slot B  │ ← side-by-side
- *   │  (text + tags)     │  Caption: "Model B"  │
- *   ├────────────────────┴─────────────────────┤
- *   │  Case-study block (full width)            │
- *   └──────────────────────────────────────────┘
+ *   ┌─────────────────────────────────────┐
+ *   │ Project header (label + title)       │
+ *   ├─────────────────────────────────────┤
+ *   │ ModelViewer — Slot A  (full width)   │
+ *   ├───────────────────┬─────────────────┤
+ *   │ ProjectBlock [0]  │ ModelViewer — B  │ ← side-by-side
+ *   ├───────────────────┴─────────────────┤
+ *   │ ProjectBlock [1]  (full width)       │
+ *   ├─────────────────────────────────────┤
+ *   │ ModelViewer — Slot C  (full width)   │
+ *   ├─────────────────────────────────────┤
+ *   │ ProjectBlock [2]  (full width)       │
+ *   └─────────────────────────────────────┘
  *
- * HOW TO ADD A REAL 3D MODEL
- * ───────────────────────────
- * 1. Place your .glb or .gltf file in /public/models/
- *    (create the folder if it doesn't exist).
- * 2. Pass the path as the `modelPath` prop to <ModelViewer>:
- *      <ModelViewer modelPath="/models/my-sculpture.glb" label="Sculpture 01" />
- * 3. In ModelViewer.jsx, uncomment the GLTFLoader import and the loader block
- *    inside the `loadModel` section.
+ * HOW TO LINK A REAL 3D MODEL TO A VIEWER
+ * ─────────────────────────────────────────
+ * Each <ModelViewer> accepts a unique `modelPath` prop.
+ * Place your .glb / .gltf files in /public/models/, then pass the path:
  *
- * CHANGING VIEWER HEIGHT
- * ───────────────────────
- * Pass a `height` number (pixels) to any <ModelViewer>:
- *   <ModelViewer height={500} label="…" />
+ *   <ModelViewer modelPath="/models/sculpture-front.glb" label="Front view" />
+ *   <ModelViewer modelPath="/models/sculpture-detail.glb" label="Detail" />
  *
- * Content for the text blocks comes from PROJECT_PAGES in data/content.js
- * (the entry with menuKey === 'PROJECT 2').
+ * Different paths → different models rendered in each slot.
+ * See ModelViewer.jsx for GLTFLoader wiring instructions.
+ *
+ * Content for the text blocks comes from the PROJECT_PAGES entry whose
+ * menuKey is 'PROJECT 2' in data/content.js.
  */
 
 import { PROJECT_PAGES } from '../../data/content'
 import ModelViewer from '../ModelViewer'
+import ProjectBlock from '../ProjectBlock'
 import '../../styles/pages/project.css'
 import '../../styles/pages/project2.css'
 
-// ─── ProjectBlock (local copy — same as generic ProjectPage) ──────────────────
-
-/**
- * ProjectBlock
- * A bordered case-study section with a large decorative numeral.
- */
-function ProjectBlock({ num, title, desc, tags }) {
-  return (
-    <div className="project-block" data-num={num}>
-      <div className="proj-title">{title}</div>
-      <p className="proj-desc">{desc}</p>
-      <div className="proj-tags">
-        {tags.map(tag => (
-          <span className="proj-tag" key={tag}>{tag}</span>
-        ))}
-      </div>
-    </div>
-  )
-}
-
-// ─── Project2Page ─────────────────────────────────────────────────────────────
-
 export default function Project2Page() {
-  // Pull this project's data from the shared content store.
   const project = PROJECT_PAGES.find(p => p.menuKey === 'PROJECT 2')
+  const { blocks } = project
 
   return (
     <div className="page visible">
@@ -77,47 +54,36 @@ export default function Project2Page() {
         <h2>{project.title}</h2>
       </div>
 
-      {/* ── 3D Viewer A — full width ──────────────────────────────────────────
-          The main model slot.  Shows a low-poly placeholder by default.
-          To load a real model: add modelPath="/models/your-file.glb"
-          and follow the GLTFLoader instructions in ModelViewer.jsx.        */}
+      {/* ── Slot A: full-width model ── */}
       <ModelViewer
-        label="Model Slot A — drop a .glb file here (see ModelViewer.jsx)"
+        modelPath="/models/project2-overview.glb"
+        label="Model Slot A — overview"
         height={460}
-        /* modelPath="/models/your-model-a.glb" */
       />
 
-      {/* ── Side-by-side: text block + Viewer B ─────────────────────────────── */}
+      {/* ── Side-by-side: first text block + Slot B model ── */}
       <div className="proj2-split">
+        {blocks[0] && <ProjectBlock {...blocks[0]} />}
 
-        {/* Left: first case-study block from content.js */}
-        {project.blocks[2] && (
-          <ProjectBlock {...project.blocks[0]} />
-        )}
-
-        {/* Right: second model slot — shorter height to match the text block */}
         <ModelViewer
-          label="Model Slot B"
+          modelPath="/models/project2-detail.glb"
+          label="Model Slot B — detail"
           height={280}
-          /* modelPath="/models/your-model-b.glb" */
         />
-        {/* ── Second text block — full width ── */}
-      {project.blocks[2] && (
-        <ProjectBlock {...project.blocks[2]} />
-         )}
-         <ModelViewer
-          label="Model Slot B"
-          height={280}
-          /* modelPath="/models/your-model-b.glb" */
-        />
-
       </div>
 
-      {/* ── Second text block — full width ── */}
-      {project.blocks[2] && (
-        <ProjectBlock {...project.blocks[1]} />
-      )}
-       
+      {/* ── Second text block: full width ── */}
+      {blocks[1] && <ProjectBlock {...blocks[1]} />}
+
+      {/* ── Slot C: full-width model ── */}
+      <ModelViewer
+        modelPath="/models/project2-closeup.glb"
+        label="Model Slot C — close-up"
+        height={360}
+      />
+
+      {/* ── Third text block: full width ── */}
+      {blocks[2] && <ProjectBlock {...blocks[2]} />}
 
     </div>
   )
