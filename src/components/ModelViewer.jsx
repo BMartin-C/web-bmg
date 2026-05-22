@@ -223,7 +223,7 @@ export default function ModelViewer({ modelPath, label, height = 380 }) {
     let model = buildPlaceholder()
     scene.add(model)
 
-    /*
+    
     // ── GLTF loader (uncomment to use) ────────────────────────────────────
     if (modelPath) {
       const loader = new GLTFLoader()
@@ -259,7 +259,7 @@ export default function ModelViewer({ modelPath, label, height = 380 }) {
         (err) => console.error('GLTFLoader error:', err),
       )
     }
-    */
+    
 
     // ── Resize handling ───────────────────────────────────────────────────────
     // ResizeObserver fires whenever the container's size changes (e.g. window
