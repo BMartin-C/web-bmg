@@ -77,7 +77,7 @@ export default function Project2Page() {
 
       {/* ── Slot C: full-width model ── */}
       <ModelViewer
-        modelPath="C:\Users\CFGS1\Documents\GitHub\web-bmg\src\assets\3DBenchy.stl"
+        modelPath="/assets/gislinge_viking_boat.glb"
         label="Model Slot C — close-up"
         height={360}
       />
