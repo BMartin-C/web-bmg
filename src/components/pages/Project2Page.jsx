@@ -56,7 +56,7 @@ export default function Project2Page() {
 
       {/* ── Slot A: full-width model ── */}
       <ModelViewer
-        modelPath="/assets/gislinge_viking_boat.glb"
+        modelPath="/src/assets/gislinge_viking_boat.glb"
         label="Model Slot A — overview"
         height={460}
       />
@@ -66,7 +66,7 @@ export default function Project2Page() {
         {blocks[0] && <ProjectBlock {...blocks[0]} />}
 
         <ModelViewer
-          modelPath="/assets/gislinge_viking_boat.glb"
+          modelPath="/src/assets/gislinge_viking_boat.glb"
           label="Model Slot B — detail"
           height={280}
         />
@@ -77,7 +77,7 @@ export default function Project2Page() {
 
       {/* ── Slot C: full-width model ── */}
       <ModelViewer
-        modelPath="/assets/gislinge_viking_boat.glb"
+        modelPath="/src/assets/gislinge_viking_boat.glb"
         label="Model Slot C — close-up"
         height={360}
       />
