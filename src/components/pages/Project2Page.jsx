@@ -77,7 +77,7 @@ export default function Project2Page() {
 
       {/* ── Slot C: full-width model ── */}
       <ModelViewer
-        modelPath="/models/project2-closeup.glb"
+        modelPath="C:\Users\CFGS1\Documents\GitHub\web-bmg\src\assets\3DBenchy.stl"
         label="Model Slot C — close-up"
         height={360}
       />
