@@ -56,7 +56,7 @@ export default function Project2Page() {
 
       {/* ── Slot A: full-width model ── */}
       <ModelViewer
-        modelPath="/models/project2-overview.glb"
+        modelPath="/assets/gislinge_viking_boat.glb"
         label="Model Slot A — overview"
         height={460}
       />
@@ -66,7 +66,7 @@ export default function Project2Page() {
         {blocks[0] && <ProjectBlock {...blocks[0]} />}
 
         <ModelViewer
-          modelPath="/models/project2-detail.glb"
+          modelPath="/assets/gislinge_viking_boat.glb"
           label="Model Slot B — detail"
           height={280}
         />
