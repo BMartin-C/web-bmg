@@ -37,7 +37,6 @@ import * as THREE from 'three'
 // No external OrbitControls import needed — we use a lightweight inline
 // implementation below that avoids all three/examples path issues.
 // Uncomment to enable GLTF loading (also update the path to match your three version):
-import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js'
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js'
 
 import '../styles/model-viewer.css'
